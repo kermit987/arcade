@@ -1,0 +1,97 @@
+/*
+** Nibbler.hpp for Nibbler in /home/clementine/rendu/arcade
+** 
+** Made by Clementine
+** Login   <clementine@clementine>
+** 
+** Started on  Sat Mar 19 04:29:55 2016 Clementine
+** Last update Sun Apr  3 22:22:59 2016 Clementine
+*/
+
+#ifndef NIBBLER_HPP_
+# define NIBBLER_HPP_
+
+#include <cstdlib>
+#include <ctime>
+#include <unistd.h>
+#include <fstream>
+#include <iostream>
+#include <list>
+#include <vector>
+#include "IGame.hpp"
+#include "Protocol.hpp"
+
+class Nibbler : public IGame
+{
+public:
+  Nibbler();
+  ~Nibbler() {};
+  
+  bool Start(IGui *, const std::string &, t_KeyValue *);
+  bool Restart(t_KeyValue *);
+  
+  /* GETTER */
+
+  const std::string& getName() const;
+  const std::string& getFileScoreName() const;
+
+  /* FOR KOALINETTE */
+
+  void Play();
+  
+private:
+  IGui *_lib;
+
+  std::list<t_Img>	_wall;
+  std::list<t_Frame>	_snake;
+  
+  t_Img		apple;
+  t_Img		background;
+  t_Img		snakeImg;
+  
+  t_Event	key;
+
+  int		_direction;
+  
+  std::string	_name;
+  std::string	_fileScore;
+
+  /* --- FUNCTIONS --- */
+
+  /* DRAW ELEMENT */
+
+  void drawWall();
+  void drawSnake();
+  void drawBackground();
+  void drawApple();
+
+  /* CHECK POSITION */
+
+  bool checkSnake(int x, int y);
+  bool checkWall(int x, int y);
+  bool checkBorder(int x, int y);
+  bool checkApple(int x, int y);
+  
+  /* EVENT */
+  
+  void	Create();
+  int	move(t_KeyValue *);
+  void	initSnake(int x, int y);
+  void	initWall(int x, int y);
+  void	DisplayMap();
+  int	Direction(int, int);  
+
+  /* --- FOR KOALINETTE --- */
+
+  arcade::WhereAmI	*where;
+  arcade::GetMap	*gMap;
+  char			_command;
+
+  void initGetMap();
+  void initWhereAmI();
+  void checkPlayCommand(const char &);
+  void DirectionMap(uint16_t, uint16_t, int);
+  
+};
+
+#endif /* !NIBBLER_HPP_ */
